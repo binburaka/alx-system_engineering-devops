@@ -7,18 +7,33 @@
 #   Deletes the file /var/run/holbertonscript.pid and terminates upon
 #+  receiving a SIGQUIT or SIGTERM.
 
-terminator() {
-  rm /var/run/holbertonscript.pid
-  exit
+sudo touch /var/run/bestscript.pid
+sudo bash -c "echo $$ > /var/run/bestscript.pid"
+
+trap interrup2 SIGINT
+trap interrup1 SIGTERM
+trap interrup3 SIGQUIT
+
+interrup3()
+{
+    sudo rm /var/run/bestscript.pid
+    exit $?
 }
 
-echo "$$" > /var/run/holbertonscript.pid
+interrup2()
+{
+    echo "Y U no love me?!"
+}
+
+interrup1()
+{
+    echo "I hate the kill command"
+    sudo rm /var/run/bestscript.pid
+    exit $?
+}
 
 while true
 do
-  echo "To infinity and beyond"
-  sleep 2
-  trap 'echo "Y U no love me?!"' SIGINT
-  trap 'echo "I hate the kill command" && terminator' SIGTERM
-  trap 'terminator' SIGQUIT
+    echo "To infinity and beyond"
+    sleep 2
 done
