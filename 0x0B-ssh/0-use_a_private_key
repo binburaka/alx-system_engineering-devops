@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# connecting to a server using a private key
+
+ssh -i ~/binburaka ubuntu@54.90.20.101
