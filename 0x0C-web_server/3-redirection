@@ -1,32 +1,10 @@
 #!/usr/bin/env bash
 # Bash script to Install nginx web server
 
-echo -e "Updating and installing ${brown}Nginx.\n"
-sudo apt-get update -y -qq && \
-	 sudo apt-get install nginx -y
-
-echo -e "\nSetting up some minor stuff.\n"
-
-# start the nginx service
+sudo apt-get update -y
+sudo apt-get install nginx -y
+echo 'Holberton School' | sudo tee /var/www/html/index.nginx-debian.html
 sudo service nginx start
-
-# allowing nginx on firewall
-sudo ufw allow 'Nginx HTTP'
-
-# Give the user ownership to website files for easy editing
-sudo chown -R "$USER":"$USER" /var/www/html
-sudo chmod -R 755 /var/www
-
-# Backup default index
-cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
-
-# Creation of the  new index
-echo -e "Hello World!" > /var/www/html/index.nginx-debian.html
-
-# youtube video Setting up /redirect_me
-sudo sed -i '24i\	rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-available/default
-
-# Restarting the nginx
+rdt="location /redirect_me {\\nrewrite ^(.*)$ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;\\n}"
+sudo sed -i "30i $rdt" /etc/nginx/sites-available/default
 sudo service nginx restart
-
-echo -e "\nCompleted.\n"
